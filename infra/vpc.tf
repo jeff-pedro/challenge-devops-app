@@ -2,7 +2,7 @@ resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
   tags = {
-    Name = "aluraflix_vpc"
+    Name = "${var.project_name}_vpc"
   }
 }
 
@@ -11,6 +11,10 @@ resource "aws_subnet" "subnet1" {
   cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 1)
   map_public_ip_on_launch = true
   availability_zone       = "us-east-2a"
+
+  tags = {
+    Name = "${var.project_name}_${aws_subnet.subnet1.name}"
+  }
 }
 
 resource "aws_subnet" "subnet2" {
@@ -18,6 +22,10 @@ resource "aws_subnet" "subnet2" {
   cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 2)
   map_public_ip_on_launch = true
   availability_zone       = "us-east-2b"
+
+  tags = {
+    Name = "${var.project_name}_${aws_subnet.subnet2.name}"
+  }
 }
 
 resource "aws_internet_gateway" "internet_gateway" {
@@ -48,7 +56,7 @@ resource "aws_route_table_association" "subnet2_route" {
 
 resource "aws_security_group" "security_group" {
   name        = "ecs-security-group"
-  description = "Allow HTTP inbound traffic and all outbound traffic"
+  description = "Allow All inbound traffic and all outbound traffic"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -70,6 +78,9 @@ resource "aws_security_group" "security_group" {
   }
 
   tags = {
-    Name = "allow_http"
+    Name = "allow_all_traffic"
   }
 }
+
+
+

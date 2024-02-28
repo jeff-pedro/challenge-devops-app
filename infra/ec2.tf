@@ -1,10 +1,12 @@
 resource "aws_launch_template" "launch_template" {
+  depends_on    = [aws_security_group.security_group]
+
   name          = "lt-ecs-asg-aluraflix"
   image_id      = "ami-02ca28e7c7b8f8be1"
   instance_type = "t2.micro"
 
   key_name               = "aws_ohio"
-  vpc_security_group_ids = ["sg-08547411ca2c5c77d"]
+  vpc_security_group_ids = [aws_security_group.security_group.id]
   iam_instance_profile {
     name = "ecsInstanceRole"
   }

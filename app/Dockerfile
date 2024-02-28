@@ -1,22 +1,33 @@
-FROM python:3
+# FROM python:3
+FROM alpine:3.16.0
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-ENV DJANGO_SUPERUSER_USERNAME=admin
-ENV DJANGO_SUPERUSER_PASSWORD=123
-ENV DJANGO_SUPERUSER_EMAIL="admin@admin.com"
 
 WORKDIR /api
 
+RUN set -xe
+
 COPY . /api/
 
-RUN pip install -r requirements.txt
+RUN apk add --no-cache python3 py3-pip tini
 
-RUN python manage.py migrate
+RUN pip install --upgrade pip setuptools-scm
+    
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN python manage.py loaddata aluraflix/fixtures/programas_iniciais.json
+RUN python3 manage.py makemigrations
 
-RUN python manage.py createsuperuser --noinput
+RUN python3 manage.py migrate
 
-ENTRYPOINT python manage.py runserver 0.0.0.0:8000
+RUN python3 manage.py loaddata aluraflix/fixtures/programas_iniciais.json
 
-EXPOSE 8000
+RUN addgroup -g 1000 appuser; \
+    adduser -u 1000 -G appuser -D -h /app appuser; \
+    chown -R appuser:appuser /app
+
+# RUN python3 manage.py createsuperuser --noinput
+
+USER appuser
+EXPOSE 8000/tcp
+ENTRYPOINT [ "tini", "--" ]
+CMD [ "python3", "manage.py", "runserver", "0.0.0.0:8000" ]

@@ -39,7 +39,7 @@ resource "aws_launch_template" "launch_template" {
 }
 
 resource "aws_autoscaling_group" "ecs_asg" {
-  name             = "infra-ecs-cluster-aluraflix"
+  name             = "infra-ecs-cluster-${var.name}"
   desired_capacity = 2
   max_size         = 3
   min_size         = 1
@@ -59,7 +59,7 @@ resource "aws_autoscaling_group" "ecs_asg" {
 }
 
 resource "aws_lb" "ecs_alb" {
-  name               = "ecs-alb"
+  name               = "ecs-alb-${var.name}"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.security_group.id]
@@ -68,12 +68,12 @@ resource "aws_lb" "ecs_alb" {
   enable_deletion_protection = true
 
   tags = {
-    Name = "ecs-alb"
+    Name = "ecs-alb-${var.name}"
   }
 }
 
 resource "aws_lb_target_group" "ecs_tg" {
-  name        = "ecs-target-group"
+  name        = "ecs-tg-${var.name}"
   port        = "80"
   protocol    = "HTTP"
   target_type = "ip"

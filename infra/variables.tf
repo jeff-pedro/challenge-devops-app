@@ -9,3 +9,11 @@ variable "vpc_cidr" {
 variable "key" {
   type = string
 }
+
+variable "image_name" {
+  type = string
+}
+
+variable "image_version" {
+  type = string
+}

@@ -1,7 +1,11 @@
+variable "name" {
+  type = string
+}
+
 variable "vpc_cidr" {
   type = string
 }
 
-variable "project_name" {
+variable "key" {
   type = string
 }

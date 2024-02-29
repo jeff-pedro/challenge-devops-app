@@ -2,7 +2,7 @@ resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
   tags = {
-    Name = "${var.project_name}_vpc"
+    Name = "${var.name}_vpc"
   }
 }
 
@@ -13,7 +13,7 @@ resource "aws_subnet" "subnet1" {
   availability_zone       = "us-east-2a"
 
   tags = {
-    Name = "${var.project_name}_subnet1"
+    Name = "${var.name}_subnet1"
   }
 }
 
@@ -24,7 +24,7 @@ resource "aws_subnet" "subnet2" {
   availability_zone       = "us-east-2b"
 
   tags = {
-    Name = "${var.project_name}_subnet2"
+    Name = "${var.name}_subnet2"
   }
 }
 

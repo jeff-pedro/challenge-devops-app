@@ -2,7 +2,7 @@ resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
   tags = {
-    Name = "${var.name}_vpc"
+    Name = "${var.name}-vpc"
   }
 }
 
@@ -13,7 +13,7 @@ resource "aws_subnet" "subnet1" {
   availability_zone       = "us-east-2a"
 
   tags = {
-    Name = "${var.name}_subnet1"
+    Name = "${var.name}-subnet1"
   }
 }
 
@@ -24,14 +24,14 @@ resource "aws_subnet" "subnet2" {
   availability_zone       = "us-east-2b"
 
   tags = {
-    Name = "${var.name}_subnet2"
+    Name = "${var.name}-subnet2"
   }
 }
 
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.main.id
   tags = {
-    Name = "internet_gateway"
+    Name = "internet-gateway"
   }
 }
 
@@ -54,33 +54,33 @@ resource "aws_route_table_association" "subnet2_route" {
   route_table_id = aws_route_table.route_table.id
 }
 
-resource "aws_security_group" "security_group" {
-  name        = "ecs-security-group"
-  description = "Allow All inbound traffic and all outbound traffic"
+resource "aws_security_group" "allow_http" {
+  name        = "ecs-web-access"
+  description = "Allow HTTP inbound traffic and all outbound traffic"
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = -1
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
     self             = false
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-    description      = "any"
   }
 
   egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = -1
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
 
   tags = {
-    Name = "allow_all_traffic"
+    Name = "allow_http_traffic"
   }
 }
 
-
-
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.main.id
+}

@@ -65,7 +65,7 @@ resource "aws_lb" "ecs_alb" {
   security_groups    = [aws_security_group.security_group.id]
   subnets            = [aws_subnet.subnet1.id, aws_subnet.subnet2.id]
 
-  enable_deletion_protection = true
+  enable_deletion_protection = false
 
   tags = {
     Name = "ecs-alb-${var.name}"

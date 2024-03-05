@@ -18,10 +18,6 @@ variable "lb_target_group" {
   type = string
 }
 
-variable "subnet1" {
-  type = string
-}
-
-variable "subnet2" {
-  type = string
+variable "subnets" {
+  type = list(string)
 }

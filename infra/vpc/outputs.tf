@@ -2,17 +2,14 @@ output "vpc_id" {
   value = aws_vpc.main.id
 }
 
-output "subnet1_id" {
-  value = aws_subnet.subnet1.id
-}
-
-output "subnet2_id" {
-  value = aws_subnet.subnet2.id
+output "subnets" {
+  description = "List of available subnets"
+  value = aws_subnet.subnet
 }
 
 output "sg_allow_http_id" {
-  value       = aws_security_group.allow_http.id
   description = "Security Group to allow HTTP traffic"
+  value       = aws_security_group.allow_http.id
 }
 
 output "sg_default_id" {

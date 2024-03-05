@@ -21,12 +21,8 @@ variable "sg_default" {
   type = string
 }
 
-variable "subnet1" {
-  type = string
-}
-
-variable "subnet2" {
-  type = string
+variable "subnets" {
+  default = null
 }
 
 variable "vpc_id" {

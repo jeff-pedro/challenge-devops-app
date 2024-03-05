@@ -16,3 +16,8 @@ variable "tags" {
 variable "azs" {
   type = list(string)
 }
+
+variable "qtd_subnets" {
+  description = "Quantity of subnets used for VPC"
+  type = number
+}

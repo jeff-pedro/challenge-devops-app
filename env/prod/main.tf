@@ -24,6 +24,14 @@ locals {
   lb_target_group  = module.ec2.lb_target_group
 }
 
+# Define ECS container values
+locals {
+  ecs_image_name       = "aluraflix-api"
+  ecs_image_version    = "latest"
+  ecs_image_repository = "590183733571.dkr.ecr.us-east-2.amazonaws.com"
+  ecs_image            = "${local.ecs_image_repository}/${local.ecs_image_name}:${local.ecs_image_version}"
+}
+
 module "vpc" {
   source = "../../infra/vpc"
 
@@ -61,10 +69,10 @@ module "ecs" {
   source = "../../infra/ecs"
 
   name            = local.app_name
+  image           = local.ecs_image
+  container_name  = local.ecs_image_name
   cluster_name    = local.ecs_cluster_name
   asg_arn         = local.asg_arn
   lb_target_group = local.lb_target_group
-  image_name      = "aluraflix-api"
-  image_version   = "latest"
   subnets         = local.subnets
 }

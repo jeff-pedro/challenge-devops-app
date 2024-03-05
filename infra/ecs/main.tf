@@ -45,6 +45,7 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
   requires_compatibilities = ["EC2"]
   network_mode             = "bridge"
   execution_role_arn       = "arn:aws:iam::590183733571:role/ecsTaskExecutionRole"
+
   runtime_platform {
     operating_system_family = "LINUX"
     cpu_architecture        = "X86_64"
@@ -52,8 +53,8 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
 
   container_definitions = jsonencode([
     {
-      name      = "${var.image_name}"
-      image     = "590183733571.dkr.ecr.us-east-2.amazonaws.com/${var.image_name}:${var.image_version}"
+      name      = "${var.container_name}"
+      image     = "${var.image}"
       cpu       = 256
       memory    = 512
       essential = true

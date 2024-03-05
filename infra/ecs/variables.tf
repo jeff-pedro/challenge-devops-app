@@ -2,13 +2,14 @@ variable "name" {
   type = string
 }
 
-variable "image_name" {
+variable "image" {
   type = string
 }
 
-variable "image_version" {
+variable "container_name" {
   type = string
 }
+
 
 variable "asg_arn" {
   type = string

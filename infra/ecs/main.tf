@@ -41,10 +41,10 @@ resource "aws_ecs_cluster_capacity_providers" "cluster_capacity_provider" {
 }
 
 resource "aws_ecs_task_definition" "ecs_task_definition" {
-  family             = var.name
-  network_mode       = "awsvpc"
-  execution_role_arn = "arn:aws:iam::590183733571:role/ecsTaskExecutionRole"
-  cpu                = 256
+  family                   = var.name
+  requires_compatibilities = ["EC2"]
+  network_mode             = "bridge"
+  execution_role_arn       = "arn:aws:iam::590183733571:role/ecsTaskExecutionRole"
   runtime_platform {
     operating_system_family = "LINUX"
     cpu_architecture        = "X86_64"
@@ -61,8 +61,6 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
         {
           containerPort = 80
           hostPort      = 0
-          protocol      = "tcp"
-          appProtocol   = "http"
         }
       ]
     }

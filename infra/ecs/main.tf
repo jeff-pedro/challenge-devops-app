@@ -10,7 +10,7 @@ terraform {
 }
 
 resource "aws_ecs_cluster" "cluster" {
-  name = "${var.name}-cluster"
+  name = "${var.cluster_name}"
 }
 
 resource "aws_ecs_capacity_provider" "capacity_provider" {

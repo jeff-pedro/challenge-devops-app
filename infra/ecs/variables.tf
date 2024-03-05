@@ -19,5 +19,9 @@ variable "lb_target_group" {
 }
 
 variable "subnets" {
-  type = list(string)
+  default = null
+}
+
+variable "cluster_name" {
+  type = string
 }

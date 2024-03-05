@@ -13,6 +13,6 @@ output "sg_allow_http_id" {
 }
 
 output "sg_default_id" {
-  value = aws_default_security_group.default.id
+  value = aws_vpc.main.default_security_group_id
 }
 

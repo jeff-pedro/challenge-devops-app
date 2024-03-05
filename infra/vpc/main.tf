@@ -18,7 +18,7 @@ resource "aws_vpc" "main" {
 }
 
 resource "aws_subnet" "subnet" {
-  count = var.qtd_subnets
+  count                   = var.qtd_subnets
   vpc_id                  = aws_vpc.main.id
   cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, count.index + 1)
   map_public_ip_on_launch = true
@@ -29,17 +29,6 @@ resource "aws_subnet" "subnet" {
   }
 }
 
-# resource "aws_subnet" "subnet2" {
-#   vpc_id                  = aws_vpc.main.id
-#   cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 2)
-#   map_public_ip_on_launch = true
-#   availability_zone       = "us-east-2b"
-
-#   tags = {
-#     Name = "${var.name}-subnet2"
-#   }
-# }
-
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.main.id
   tags = {
@@ -47,8 +36,8 @@ resource "aws_internet_gateway" "internet_gateway" {
   }
 }
 
-resource "aws_route_table" "route_table" {
-  vpc_id = aws_vpc.main.id
+resource "aws_default_route_table" "rt_default" {
+  default_route_table_id = aws_vpc.main.default_route_table_id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -57,15 +46,10 @@ resource "aws_route_table" "route_table" {
 }
 
 resource "aws_route_table_association" "subnet_route" {
-  count = var.qtd_subnets
+  count          = var.qtd_subnets
   subnet_id      = aws_subnet.subnet[count.index].id
-  route_table_id = aws_route_table.route_table.id
+  route_table_id = aws_default_route_table.rt_default.id
 }
-
-# resource "aws_route_table_association" "subnet2_route" {
-#   subnet_id      = aws_subnet.subnet2.id
-#   route_table_id = aws_route_table.route_table.id
-# }
 
 resource "aws_security_group" "allow_http" {
   name = "allow-http"
@@ -93,8 +77,3 @@ resource "aws_security_group" "allow_http" {
     Name = "allow_http_traffic"
   }
 }
-
-resource "aws_default_security_group" "default" {
-  vpc_id = aws_vpc.main.id
-}
-

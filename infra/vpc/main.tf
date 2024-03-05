@@ -1,5 +1,16 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.38.0"
+    }
+  }
+
+  required_version = ">= 1.2.0"
+}
+
 resource "aws_vpc" "main" {
-  cidr_block           = var.vpc_cidr
+  cidr_block           = var.cidr
   enable_dns_hostnames = true
   tags = {
     Name = "${var.name}-vpc"
@@ -55,9 +66,9 @@ resource "aws_route_table_association" "subnet2_route" {
 }
 
 resource "aws_security_group" "allow_http" {
-  name        = "ecs-web-access"
-  description = "Allow HTTP inbound traffic and all outbound traffic"
-  vpc_id      = aws_vpc.main.id
+  name = "allow-http"
+
+  vpc_id = aws_vpc.main.id
 
   ingress {
     from_port        = 80
@@ -84,3 +95,4 @@ resource "aws_security_group" "allow_http" {
 resource "aws_default_security_group" "default" {
   vpc_id = aws_vpc.main.id
 }
+

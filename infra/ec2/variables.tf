@@ -9,6 +9,10 @@ variable "name" {
   type = string
 }
 
+variable "production" {
+  default = false
+}
+
 variable "key" {
   type = string
 }
@@ -38,4 +42,8 @@ variable "instance_size" {
   description = "Size of AWS intance"
   type        = string
   default     = "t2.micro"
+}
+
+variable "cluster_name" {
+  type = string
 }

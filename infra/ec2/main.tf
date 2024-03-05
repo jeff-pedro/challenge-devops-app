@@ -14,6 +14,14 @@ resource "aws_key_pair" "ssh_key" {
   public_key = file("${var.key}.pub")
 }
 
+# Template for ecs agent configuration bash script
+data "template_file" "ecs_script" {
+  template = file("${path.module}/ecs.tpl")
+  vars = {
+    cluster_name = "${var.cluster_name}"
+  }
+}
+
 resource "aws_launch_template" "launch_template" {
   name          = "lt-ecs-asg-${var.name}"
   image_id      = var.instance_image
@@ -25,14 +33,6 @@ resource "aws_launch_template" "launch_template" {
     name = "ecsInstanceRole"
   }
 
-  # block_device_mappings {
-  #   device_name = "/dev/xvda"
-  #   ebs {
-  #     volume_size = 8
-  #     volume_type = "gp3"
-  #   }
-  # }
-
   tag_specifications {
     resource_type = "instance"
 
@@ -41,7 +41,7 @@ resource "aws_launch_template" "launch_template" {
     }
   }
 
-  user_data = filebase64("${path.module}/ecs.sh")
+  user_data = data.template_file.ecs_script.rendered
 }
 
 resource "aws_autoscaling_group" "ecs_asg" {
@@ -78,6 +78,7 @@ resource "aws_lb" "ecs_alb" {
     Name = "ecs-alb-${var.name}"
   }
 
+  count = var.production ? 1 : 0
 }
 
 resource "aws_lb_target_group" "ecs_tg" {
@@ -90,15 +91,19 @@ resource "aws_lb_target_group" "ecs_tg" {
   health_check {
     path = "/"
   }
+
+  count = var.production ? 1 : 0
 }
 
 resource "aws_lb_listener" "ecs_alb_listener" {
-  load_balancer_arn = aws_lb.ecs_alb.arn
+  load_balancer_arn = aws_lb.ecs_alb[0].arn
   port              = "80"
   protocol          = "HTTP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.ecs_tg.arn
+    target_group_arn = aws_lb_target_group.ecs_tg[0].arn
   }
+
+  count = var.production ? 1 : 0
 }

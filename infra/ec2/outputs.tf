@@ -3,5 +3,5 @@ output "asg_arn" {
 }
 
 output "lb_target_group" {
-  value = aws_lb_target_group.ecs_tg.arn
+  value = aws_lb_target_group.ecs_tg[0].arn
 }

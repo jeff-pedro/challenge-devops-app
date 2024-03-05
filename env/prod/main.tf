@@ -14,22 +14,23 @@ provider "aws" {
 }
 
 locals {
-  app_name        = "aluraflix"
-  vpc_id          = module.vpc.vpc_id
-  subnets         = module.vpc.subnets
-  sg_allow_http   = module.vpc.sg_allow_http_id
-  sg_dafault      = module.vpc.sg_default_id
-  asg_arn         = module.ec2.asg_arn
-  lb_target_group = module.ec2.lb_target_group
+  app_name         = "aluraflix"
+  ecs_cluster_name = "${local.app_name}-cluster"
+  vpc_id           = module.vpc.vpc_id
+  subnets          = module.vpc.subnets
+  sg_allow_http    = module.vpc.sg_allow_http_id
+  sg_dafault       = module.vpc.sg_default_id
+  asg_arn          = module.ec2.asg_arn
+  lb_target_group  = module.ec2.lb_target_group
 }
 
 module "vpc" {
   source = "../../infra/vpc"
 
-  name = local.app_name
-  cidr = "10.0.0.0/16"
+  name        = local.app_name
+  cidr        = "10.0.0.0/16"
   qtd_subnets = 2
-  azs  = ["us-east-2a", "us-east-2b"]
+  azs         = ["us-east-2a", "us-east-2b"]
 
   tags = {
     Terraform   = "true"
@@ -47,6 +48,8 @@ module "ec2" {
   subnets        = local.subnets
   sg_allow_http  = local.sg_allow_http
   sg_default     = local.sg_dafault
+  cluster_name   = local.ecs_cluster_name
+  production     = true
 
   tags = {
     Terraform   = "true"
@@ -58,6 +61,7 @@ module "ecs" {
   source = "../../infra/ecs"
 
   name            = local.app_name
+  cluster_name    = local.ecs_cluster_name
   asg_arn         = local.asg_arn
   lb_target_group = local.lb_target_group
   image_name      = "aluraflix-api"

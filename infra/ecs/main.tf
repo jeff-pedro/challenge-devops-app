@@ -10,7 +10,7 @@ terraform {
 }
 
 resource "aws_ecs_cluster" "cluster" {
-  name = "${var.cluster_name}"
+  name = var.cluster_name
 }
 
 resource "aws_ecs_capacity_provider" "capacity_provider" {
@@ -99,4 +99,6 @@ resource "aws_ecs_service" "service" {
     container_name   = var.image_name
     container_port   = 80
   }
+
+  depends_on = [cluster_capacity_provider]
 }

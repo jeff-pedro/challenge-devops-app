@@ -14,10 +14,10 @@ resource "aws_key_pair" "ssh_key" {
   public_key = file("${var.key}.pub")
 }
 
-resource "aws_launch_template" "ecs_launch_template" {
-  name          = "lt-ecs-asg-aluraflix"
-  image_id      = "ami-02ca28e7c7b8f8be1" # tem que ter suporte ao ecs TROCAR
-  instance_type = "t2.micro"
+resource "aws_launch_template" "launch_template" {
+  name          = "lt-ecs-asg-${var.name}"
+  image_id      = var.instance_image
+  instance_type = var.instance_size
 
   key_name               = var.key
   vpc_security_group_ids = [var.sg_allow_http, var.sg_default]
@@ -51,7 +51,7 @@ resource "aws_autoscaling_group" "ecs_asg" {
   min_size         = 1
 
   launch_template {
-    id      = aws_launch_template.ecs_launch_template.id
+    id      = aws_launch_template.launch_template.id
     version = "$Latest"
   }
 

@@ -32,3 +32,14 @@ variable "subnet2" {
 variable "vpc_id" {
   type = string
 }
+
+variable "instance_image" {
+  description = "AWS image ecs-optimized"
+  type        = string
+}
+
+variable "instance_size" {
+  description = "Size of AWS intance"
+  type        = string
+  default     = "t2.micro"
+}

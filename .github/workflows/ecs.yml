@@ -1,5 +1,4 @@
 name: Deploy ECS
-run-name:  ${{ github.actor }} is deploy this application on Amazon Elastic Container Service 
 
 on:
   push:
@@ -38,7 +37,7 @@ jobs:
           ECR_REPOSITORY: aluraflix-api
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG app/
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
           

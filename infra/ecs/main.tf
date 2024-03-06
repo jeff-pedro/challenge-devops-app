@@ -41,6 +41,8 @@ resource "aws_ecs_cluster_capacity_providers" "cluster_capacity_provider" {
     weight            = 100
     capacity_provider = aws_ecs_capacity_provider.capacity_provider.name
   }
+
+  depends_on = [aws_ecs_capacity_provider.capacity_provider]
 }
 
 resource "aws_ecs_task_definition" "ecs_task_definition" {

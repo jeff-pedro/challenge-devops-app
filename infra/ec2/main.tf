@@ -44,7 +44,7 @@ resource "aws_launch_template" "launch_template" {
     )
   }
 
-  user_data = data.template_file.ecs_script.rendered
+  user_data = base64encode(data.template_file.ecs_script.rendered)
 }
 
 resource "aws_autoscaling_group" "ecs_asg" {

@@ -11,6 +11,7 @@ terraform {
 
 resource "aws_ecs_cluster" "cluster" {
   name = var.cluster_name
+  tags = var.tags
 }
 
 resource "aws_ecs_capacity_provider" "capacity_provider" {
@@ -26,6 +27,8 @@ resource "aws_ecs_capacity_provider" "capacity_provider" {
       target_capacity           = 90
     }
   }
+
+  tags = var.tags
 }
 
 resource "aws_ecs_cluster_capacity_providers" "cluster_capacity_provider" {
@@ -66,6 +69,8 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
       ]
     }
   ])
+
+  tags = var.tags
 }
 
 resource "aws_ecs_service" "service" {
@@ -95,6 +100,7 @@ resource "aws_ecs_service" "service" {
     type = "distinctInstance"
   }
 
+  tags = var.tags
 
   depends_on = [aws_ecs_cluster_capacity_providers.cluster_capacity_provider]
 }

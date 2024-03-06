@@ -12,9 +12,12 @@ terraform {
 resource "aws_vpc" "main" {
   cidr_block           = var.cidr
   enable_dns_hostnames = true
-  tags = {
-    Name = "${var.name}-vpc"
-  }
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.name}-vpc"
+    }
+  )
 }
 
 resource "aws_subnet" "subnet" {
@@ -24,16 +27,22 @@ resource "aws_subnet" "subnet" {
   map_public_ip_on_launch = true
   availability_zone       = var.azs[count.index]
 
-  tags = {
-    Name = "${var.name}-subnet${count.index + 1}"
-  }
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.name}-subnet${count.index + 1}"
+    }
+  )
 }
 
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.main.id
-  tags = {
-    Name = "internet-gateway"
-  }
+  tags = merge(
+    var.tags,
+    {
+      Name = "internet-gateway"
+    }
+  )
 }
 
 resource "aws_default_route_table" "rt_default" {
@@ -73,7 +82,10 @@ resource "aws_security_group" "allow_http" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = {
-    Name = "allow_http_traffic"
-  }
+  tags = merge(
+    var.tags,
+    {
+      Name = "allow_http_traffic"
+    }
+  )
 }

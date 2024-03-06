@@ -2,6 +2,13 @@ variable "name" {
   type = string
 }
 
+variable "tags" {
+  type = object({
+    Terraform   = string,
+    Environment = string
+  })
+}
+
 variable "image" {
   type = string
 }

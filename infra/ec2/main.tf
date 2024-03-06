@@ -14,7 +14,7 @@ resource "aws_key_pair" "ssh_key" {
   public_key = file("${var.key}.pub")
 }
 
-# Template for ecs agent configuration bash script
+# Template for ECS agent configuration bash script
 data "template_file" "ecs_script" {
   template = file("${path.module}/ecs.tpl")
   vars = {
@@ -36,9 +36,12 @@ resource "aws_launch_template" "launch_template" {
   tag_specifications {
     resource_type = "instance"
 
-    tags = {
-      Name = "ecs-instance"
-    }
+    tags = merge(
+      var.tags,
+      {
+        Name = "ecs-instance"
+      }
+    )
   }
 
   user_data = data.template_file.ecs_script.rendered
@@ -74,9 +77,12 @@ resource "aws_lb" "ecs_alb" {
 
   enable_deletion_protection = false
 
-  tags = {
-    Name = "ecs-alb-${var.name}"
-  }
+  tags = merge(
+    var.tags,
+    {
+      Name = "ecs-alb-${var.name}"
+    }
+  )
 
   count = var.production ? 1 : 0
 }
@@ -91,6 +97,8 @@ resource "aws_lb_target_group" "ecs_tg" {
   health_check {
     path = "/"
   }
+
+  tags = var.tags
 
   count = var.production ? 1 : 0
 }

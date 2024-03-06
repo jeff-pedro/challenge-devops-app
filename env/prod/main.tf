@@ -75,4 +75,9 @@ module "ecs" {
   asg_arn         = local.asg_arn
   lb_target_group = local.lb_target_group
   subnets         = local.subnets
+
+  tags = {
+    Terraform   = "true"
+    Environment = "prod"
+  }
 }

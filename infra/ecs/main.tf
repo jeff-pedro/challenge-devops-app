@@ -96,5 +96,5 @@ resource "aws_ecs_service" "service" {
   }
 
 
-  depends_on = [cluster_capacity_provider]
+  depends_on = [aws_ecs_cluster_capacity_providers.cluster_capacity_provider]
 }

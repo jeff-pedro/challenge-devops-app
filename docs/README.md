@@ -22,4 +22,5 @@
 ## Technologies
 - **Container**: Docker
 - **Provedor**: AWS
-- **Container Runner**: AWS Elastic Beanstalk 
+- **Container Runner**: AWS Elastic Beanstalk
+- **Infraestrutura**: Terraform

@@ -57,6 +57,6 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: servico-sistema1
+          service: aluraflix-cluster
           cluster: ec2
           wait-for-service-stability: true

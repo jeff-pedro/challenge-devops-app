@@ -32,7 +32,7 @@ locals {
 
 # Define ECS values
 locals {
-  ecs_cluster_name     = "${local.app_name}-cluster"
+  ecs_cluster_name     = "cluster-${local.app_name}"
   ecs_image_name       = "aluraflix-api"
   ecs_image_version    = "latest"
   ecs_image_repository = "590183733571.dkr.ecr.us-east-2.amazonaws.com"

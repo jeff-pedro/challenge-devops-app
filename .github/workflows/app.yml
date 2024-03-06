@@ -33,7 +33,7 @@ jobs:
         
       - name: Load data to database
         run: |
-          python app/manage.py loaddata aluraflix/fixtures/programas_iniciais.json
+          python app/manage.py loaddata app/aluraflix/fixtures/programas_iniciais.json
 
       - name: Run tests
         run: | 

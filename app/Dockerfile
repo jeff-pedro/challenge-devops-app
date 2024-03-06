@@ -16,6 +16,8 @@ RUN apk add --no-cache python3 py3-pip tini; \
     pip install --upgrade pip setuptools-scm; \
     pip install --no-cache-dir -r requirements.txt
 
+RUN sed -i 's/ALLOWED_HOSTS = \[\]/ALLOWED_HOSTS = \["*"\]/g' setup/settings.py
+
 RUN python3 manage.py migrate --noinput; \
     python3 manage.py createsuperuser --noinput; \
     python3 manage.py loaddata aluraflix/fixtures/programas_iniciais.json

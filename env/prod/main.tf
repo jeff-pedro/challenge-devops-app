@@ -13,19 +13,25 @@ provider "aws" {
   region = var.region
 }
 
+data "aws_availability_zones" "available" {}
+
 locals {
   app_name         = "aluraflix"
-  ecs_cluster_name = "${local.app_name}-cluster"
-  vpc_id           = module.vpc.vpc_id
-  subnets          = module.vpc.subnets
-  sg_allow_http    = module.vpc.sg_allow_http_id
-  sg_dafault       = module.vpc.sg_default_id
-  asg_arn          = module.ec2.asg_arn
-  lb_target_group  = module.ec2.lb_target_group
+
+  vpc_id  = module.vpc.vpc_id
+  subnets = module.vpc.subnets
+  azs     = slice(data.aws_availability_zones.available.names, 0, 2)
+
+  sg_allow_http   = module.vpc.sg_allow_http_id
+  sg_dafault      = module.vpc.sg_default_id
+  
+  asg_arn         = module.ec2.asg_arn
+  lb_target_group = module.ec2.lb_target_group
 }
 
-# Define ECS container values
+# Define ECS values
 locals {
+  ecs_cluster_name = "${local.app_name}-cluster"
   ecs_image_name       = "aluraflix-api"
   ecs_image_version    = "latest"
   ecs_image_repository = "590183733571.dkr.ecr.us-east-2.amazonaws.com"
@@ -38,7 +44,7 @@ module "vpc" {
   name        = local.app_name
   cidr        = "10.0.0.0/16"
   qtd_subnets = 2
-  azs         = ["us-east-2a", "us-east-2b"]
+  azs         = local.azs
 
   tags = {
     Terraform   = "true"

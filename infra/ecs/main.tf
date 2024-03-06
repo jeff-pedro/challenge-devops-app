@@ -69,15 +69,12 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
 }
 
 resource "aws_ecs_service" "service" {
-  name            = "${var.name}-service"
+  name            = "service-${var.name}"
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.ecs_task_definition.arn
   desired_count   = 2
 
   force_new_deployment = true
-  placement_constraints {
-    type = "distinctInstance"
-  }
 
   triggers = {
     redeployment = timestamp()
@@ -90,9 +87,14 @@ resource "aws_ecs_service" "service" {
 
   load_balancer {
     target_group_arn = var.lb_target_group
-    container_name   = var.image_name
+    container_name   = var.container_name
     container_port   = 80
   }
+
+  placement_constraints {
+    type = "distinctInstance"
+  }
+
 
   depends_on = [cluster_capacity_provider]
 }

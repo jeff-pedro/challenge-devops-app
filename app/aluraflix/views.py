@@ -7,7 +7,6 @@ from rest_framework.permissions import IsAuthenticated
 
 class ProgramaViewSet(viewsets.ModelViewSet):
     queryset = Programa.objects.all()
-    # print(str(queryset.query))
     serializer_class = ProgramaSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ['titulo']

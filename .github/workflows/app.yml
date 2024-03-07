@@ -31,7 +31,7 @@ jobs:
         run: |
           python app/manage.py makemigrations
           python app/manage.py migrate
-  
+
       - name: Load data to database
         run: |
           python app/manage.py loaddata app/aluraflix/fixtures/programas_iniciais.json
@@ -42,18 +42,14 @@ jobs:
 
   build:
     needs: test
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        python-version: [3.8]
-        os: ['ubuntu:latest']
+    runs-on: ubuntu:latest
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup Python ${{ matrix.python-version }}
+      - name: Setup Python
         uses: actions/setup-python@v3
         with:
-          python-version: ${{ matrix.python-version}}
+          python-version: 3.7
 
       - name: Run tests
         run: |

@@ -14,7 +14,7 @@ COPY . /api/
 
 RUN apk add --no-cache python3 py3-pip tini; \
     pip install --upgrade pip setuptools-scm; \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir --ignore-installed -r requirements.txt
 
 RUN sed -i 's/ALLOWED_HOSTS = \[\]/ALLOWED_HOSTS = \["*"\]/g' setup/settings.py
 

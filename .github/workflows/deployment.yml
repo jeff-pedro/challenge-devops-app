@@ -40,6 +40,6 @@ jobs:
 
   deploy:
     needs: test
-    uses: ./.github/workflows/docker.yml
+    uses: ./.github/workflows/ecs.yml
     secrets: inherit
     

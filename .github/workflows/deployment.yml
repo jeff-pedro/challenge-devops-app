@@ -16,7 +16,7 @@ jobs:
         os: ['ubuntu-latest']
     steps:
       - name: Check out app code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
@@ -39,9 +39,14 @@ jobs:
           python manage.py test
 
   build:
+    needs: test
     uses: ./.github/workflows/docker.yml
     secrets: inherit
 
   deploy:
     needs: build
     uses: ./.github/workflows/ecs.yml
+    with:
+      image: true
+
+  

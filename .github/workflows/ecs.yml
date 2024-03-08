@@ -1,44 +1,22 @@
-name: Deploy to Amazon ECS
-
 on:
-  workflow_call: 
+  workflow_call:
+    inputs:
+      image:
+        required: true
+        type: string
 
 jobs:
-  deploy-to-ecs:
+  ecs:
+    name: Deploy to Amazon ECS
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - uses: actions/checkout@v4
 
-      - name: Check out repository code
-        uses: actions/checkout@v4
+      # - name: Download task definition
+      #   run: |
+      #     aws ecs describe-task-definition --task-definition aluraflix --query taskDefinition > task-definition.json
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-region: us-east-2
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Build, tag, and push image to Amazon ECR
-        id: build-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: aluraflix-api
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG app/
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-          
-      - name: Download task definition
-        run: |
-          aws ecs describe-task-definition --task-definition aluraflix --query taskDefinition > task-definition.json
+      - run: ${{ inputs.config-path }}
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
@@ -46,8 +24,9 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: aluraflix-api
-          image: ${{ steps.build-image.outputs.image }}
-  
+          image: ${{ needs.docker.outputs.image }}
+          # image: ${{ steps.build-image.outputs.image }}
+
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:

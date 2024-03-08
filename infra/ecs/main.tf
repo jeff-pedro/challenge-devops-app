@@ -72,7 +72,6 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
     cpu_architecture        = "X86_64"
   }
 
-
   tags = var.tags
 }
 

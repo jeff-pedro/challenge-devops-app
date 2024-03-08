@@ -1,5 +1,7 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-2:590183733571:task-definition/aluraflix:17",
+    "family": "aluraflix",
+    "executionRoleArn": "arn:aws:iam::590183733571:role/ecsTaskExecutionRole",
+    "networkMode": "bridge",
     "containerDefinitions": [
         {
             "name": "aluraflix-api",
@@ -15,23 +17,6 @@
             ],
             "essential": true
         }
-    ],
-    "family": "aluraflix",
-    "executionRoleArn": "arn:aws:iam::590183733571:role/ecsTaskExecutionRole",
-    "networkMode": "bridge",
-    "revision": 17,
-    "status": "ACTIVE",
-    "requiresAttributes": [
-        {
-            "name": "com.amazonaws.ecs.capability.ecr-auth"
-        },
-        {
-            "name": "ecs.capability.execution-role-ecr-pull"
-        }
-    ],
-    "compatibilities": [
-        "EXTERNAL",
-        "EC2"
     ],
     "runtimePlatform": {
         "cpuArchitecture": "X86_64",

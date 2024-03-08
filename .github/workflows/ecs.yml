@@ -25,6 +25,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: List files CREDENTIALS
+        run: ls -R
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
@@ -49,9 +52,6 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
-      
-      - name: List files
-        run: ls -R
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def

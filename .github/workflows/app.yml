@@ -41,5 +41,6 @@ jobs:
           python app/manage.py test
 
   build:
+    name: Build application
     needs: test
     uses: ./.github/workflows/docker.yml

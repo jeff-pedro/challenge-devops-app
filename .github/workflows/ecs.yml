@@ -1,15 +1,10 @@
-name: Deploy ECS
+name: Deploy application
 
 on:
-  push:
-    branches: ["main", "ci-cd"]
-  pull_request:
-    branches: ["main"]
-
-  workflow_dispatch:
+  workflow_call: 
 
 jobs:
-  Deploy-to-EC2:
+  deploy-to-ecs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."

@@ -6,7 +6,7 @@ env:
   ECR_REPOSITORY: aluraflix-api
   ECS_CLUSTER: cluster-aluraflix
   ECS_SERVICE: service-aluraflix
-  ECS_TASK_DEFINITION: ./env/prod/task-definition.json
+  ECS_TASK_DEFINITION: env/prod/task-definition.json
   CONTAINER_NAME: aluraflix-api
 
 jobs:

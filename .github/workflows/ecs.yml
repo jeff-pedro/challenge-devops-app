@@ -1,4 +1,4 @@
-name: Deploy application
+name: Deploy to Amazon ECS
 
 on:
   workflow_call: 

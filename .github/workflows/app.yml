@@ -1,4 +1,4 @@
-name: Test application
+name: Deploy Aluraflix API
 
 on:
   push:
@@ -41,6 +41,5 @@ jobs:
           python app/manage.py test
 
   build:
-    name: Build application
     needs: test
     uses: ./.github/workflows/docker.yml

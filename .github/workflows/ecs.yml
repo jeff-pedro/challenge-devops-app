@@ -15,8 +15,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: echo ${{ github.path }}
-
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -50,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: env/prod
+        working-directory: ./env
 
     steps:
       - uses: actions/checkout@v4

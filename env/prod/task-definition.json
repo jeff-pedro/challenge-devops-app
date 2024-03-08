@@ -1,0 +1,43 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:us-east-2:590183733571:task-definition/aluraflix:17",
+    "containerDefinitions": [
+        {
+            "name": "aluraflix-api",
+            "image": "590183733571.dkr.ecr.us-east-2.amazonaws.com/aluraflix-api:latest",
+            "cpu": 256,
+            "memory": 512,
+            "portMappings": [
+                {
+                    "containerPort": 80,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true
+        }
+    ],
+    "family": "aluraflix",
+    "executionRoleArn": "arn:aws:iam::590183733571:role/ecsTaskExecutionRole",
+    "networkMode": "bridge",
+    "revision": 17,
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        }
+    ],
+    "compatibilities": [
+        "EXTERNAL",
+        "EC2"
+    ],
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "requiresCompatibilities": [
+        "EC2"
+    ]
+}

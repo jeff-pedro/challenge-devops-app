@@ -50,12 +50,7 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
   requires_compatibilities = ["EC2"]
   network_mode             = "bridge"
   execution_role_arn       = "arn:aws:iam::590183733571:role/ecsTaskExecutionRole"
-
-  runtime_platform {
-    operating_system_family = "LINUX"
-    cpu_architecture        = "X86_64"
-  }
-
+  # container_definitions = file("${path.root}/task-definition.json")
   container_definitions = jsonencode([
     {
       name      = "${var.container_name}"
@@ -71,6 +66,12 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
       ]
     }
   ])
+
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "X86_64"
+  }
+
 
   tags = var.tags
 }

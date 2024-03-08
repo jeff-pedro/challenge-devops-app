@@ -52,14 +52,16 @@ jobs:
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ./env/prod/${{ env.ECS_TASK_DEFINITION }}
+          # task-definition: './server/${{ env.ECS_TASK_DEFINITION }}
+          task-definition: ./server/task-definition.json
           container-name:  ${{ env.CONTAINER_NAME }}
           image: ${{ needs.build.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: ./env/prod/${{ steps.task-def.outputs.task-definition }}
+          # task-definition: ./env/prod/${{ steps.task-def.outputs.task-definition }}
+          task-definition: ./server/task-definition.json
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true

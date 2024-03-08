@@ -46,8 +46,10 @@ jobs:
     name: Deploy to Amazon ECS
     needs: build
     runs-on: ubuntu-latest
-
+    
     steps:
+      - uses: actions/checkout@v4
+      
       - name: List files
         run: ls -R
 

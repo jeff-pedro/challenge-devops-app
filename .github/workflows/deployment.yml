@@ -47,6 +47,6 @@ jobs:
     needs: build
     uses: ./.github/workflows/ecs.yml
     with:
-      image: true
+      image: ${{ needs.build.outputs }}
 
   

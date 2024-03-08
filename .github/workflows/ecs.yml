@@ -16,7 +16,7 @@ jobs:
       #   run: |
       #     aws ecs describe-task-definition --task-definition aluraflix --query taskDefinition > task-definition.json
 
-      - run: ${{ inputs.config-path }}
+      - run: ${{ inputs.image }}
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
@@ -24,7 +24,7 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: aluraflix-api
-          image: ${{ needs.docker.outputs.image }}
+          image: ${{ inputs.image }}
           # image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition

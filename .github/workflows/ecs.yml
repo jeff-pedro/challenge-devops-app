@@ -6,7 +6,7 @@ env:
   ECR_REPOSITORY: aluraflix-api
   ECS_CLUSTER: cluster-aluraflix
   ECS_SERVICE: service-aluraflix
-  ECS_TASK_DEFINITION: ./env/prod/task-definition.json
+  ECS_TASK_DEFINITION: task-definition.json
   CONTAINER_NAME: aluraflix-api
 
 jobs:
@@ -62,6 +62,13 @@ jobs:
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ needs.build.outputs.image }}
+
+      - name: Amazon ECS "Render Task Definition"
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}

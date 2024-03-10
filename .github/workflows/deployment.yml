@@ -2,7 +2,7 @@ name: Deploy Aluraflix API
 
 on:
   push:
-    branches: [main, ci-cd]
+    branches: [main]
 
 jobs:
   test:

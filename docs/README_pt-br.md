@@ -27,7 +27,7 @@ Este projeto faz o deploy de uma aplicação na nuvem através de um container d
 
 Para realizar o deploy é construído uma imagem **Docker**, adicionado a imagem no **Amazon Elastic Container Repository (ECR)** e executado o container no **Amazon Elastic Container Service (ECS)**. 
 
-Todo o processo acontece de maneira automatizada usando rotinas de **CI** e **CD** do **Github Actions**. Onde a cada _push_ ao repostório na _branch principal_ é disparado a execução das rotinas para **testar**, **construir** e **implantar** a aplicação no provedor da nuvem.
+Todo o processo acontece de maneira automatizada usando rotinas de **CI** e **CD** do **Github Actions**. Onde a cada **_push_** ao repostório na **_branch principal_** é disparado a execução das rotinas para **testar**, **construir** e **implantar** a aplicação no provedor da nuvem.
 
 
 ## Tecnologias usadas

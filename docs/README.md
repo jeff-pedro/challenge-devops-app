@@ -29,7 +29,7 @@ This project deploys an application to the cloud using a docker container.
 
 To perform the deployment, a **Docker** image is built, the image is added to the **Amazon Elastic Container Repository (ECR)** and the container is run on the **Amazon Elastic Container Service (ECS)**.
 
-The entire process takes place in an automated manner using **CI** and **CD** workflows from **Github Actions**. Where each _push_ to the repository in the _main branch_ triggers the execution of workflows to **test**, **build** and **deploy** the application on the cloud provider.
+The entire process takes place in an automated manner using **CI** and **CD** workflows from **Github Actions**. Where each **_push_** to the repository in the **_main branch_** triggers the execution of workflows to **test**, **build** and **deploy** the application on the cloud provider.
 
 
 ## Technologies

@@ -1,5 +1,9 @@
+name: Deploy Aluraflix API
+
 on:
-  workflow_call:
+  push:
+    branches:
+      - main
 
 env:
   AWS_REGION: us-east-2

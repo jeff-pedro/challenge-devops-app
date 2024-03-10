@@ -41,8 +41,7 @@ The entire process takes place in an automated manner using **CI** and **CD** wo
 
 
 ## Architecture
-![architecture solution image](/docs/img/architecture.svg "architecture solution image")
-
+<img src="/docs/img/architecture.svg" width="300" />
 
 ## Infrastructure
 - [challenge-devops-infra](https://github.com/jeff-pedro/challenge-devops-infra)

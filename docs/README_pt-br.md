@@ -39,8 +39,11 @@ Todo o processo acontece de maneira automatizada usando rotinas de **CI** e **CD
 
 
 ## Arquitetura
-![arquitetura da solução](/docs/img/architecture.svg "imagem da arquitetura da solução")
+<div align="center" >
 
+  <img src="/docs/img/architecture.svg"  alt="imagem da arquitetura da solução" width="400" align="center"/>
+
+</div>
 
 ## Infraestrutura
 - [challenge-devops-infra](https://github.com/jeff-pedro/challenge-devops-infra)

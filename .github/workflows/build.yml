@@ -2,6 +2,7 @@ name: Build Aluraflix API
 
 on:
   pull_request:
+  workflow_dispatch:
 
 defaults:
   run:
@@ -9,6 +10,7 @@ defaults:
 
 env:
   AWS_REGION: us-east-2
+  ECR_REPOSITORY: aluraflix-api
 
 jobs:
   test:
@@ -70,11 +72,10 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-    outputs:
-      image: ${{ steps.build-image.outputs.image }}
+          printf '{ "image": { "uri": "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" }''
 
-  # deploy:
-  #   needs: test
-  #   uses: ./.github/workflows/ecs.yml
-  #   secrets: inherit
+      - name: Upload a image metadata artifact
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: image.json
+          path: ./

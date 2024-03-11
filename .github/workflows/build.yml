@@ -84,6 +84,7 @@ jobs:
           
 
   deploy:
-    # needs: test
+    needs: build
     uses: ./.github/workflows/deploy-ecs.yml
     secrets: inherit
+    

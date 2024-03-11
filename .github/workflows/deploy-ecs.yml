@@ -32,10 +32,10 @@ jobs:
       - name: Download image artifact
         uses: actions/download-artifact@v4.1.4
         with:
-          name: image.json
+          name: image.json.zip
 
       - name: Unzip image artifact
-        run: unzip image.zip
+        run: unzip image.json.zip
 
       - name: Parse image JSON
         uses: actions/github-script@v7

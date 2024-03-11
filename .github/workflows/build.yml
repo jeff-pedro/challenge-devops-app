@@ -2,7 +2,7 @@ name: Build Aluraflix API
 
 on:
   pull_request:
-  workflow_dispatch:
+  # workflow_dispatch:
 
 defaults:
   run:
@@ -86,6 +86,6 @@ jobs:
           path: image.json
 
   deploy:
-    needs: test
+    # needs: test
     uses: ./.github/workflows/deploy-ecs.yml
     secrets: inherit

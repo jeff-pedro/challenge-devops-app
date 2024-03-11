@@ -17,6 +17,7 @@ env:
 
 jobs:
   test:
+
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -48,6 +49,7 @@ jobs:
           python manage.py test
 
   build:
+
     needs: test
     name: Build Docker image to ECR
     runs-on: ubuntu-latest
@@ -81,4 +83,4 @@ jobs:
         uses: actions/upload-artifact@v4.3.1
         with:
           name: image
-          path: ./
+          path: ./image.json

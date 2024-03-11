@@ -32,8 +32,10 @@ jobs:
         with:
           name: image
 
-      - name: Unzip image artifact
-        run: unzip image.json.zip
+      - run: ls -R
+
+      # - name: Unzip image artifact
+      #   run: unzip image.json.zip
 
       - name: Parse image JSON
         uses: actions/github-script@v7

@@ -1,9 +1,7 @@
 name: Deploy Aluraflix API
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
 
 env:
   AWS_REGION: us-east-2
@@ -15,8 +13,6 @@ env:
 
 jobs:
   deploy:
-
-    name: Deploy to Amazon ECS
     runs-on: ubuntu-latest
 
     steps:
@@ -30,24 +26,17 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - uses: actions/download-artifact@v4
-      - name: Display structure of downloaded files
-        run: ls -R
-
       - name: Download image artifact
         uses: actions/download-artifact@v4.1.4
         with:
-          name: image.json
-
-      - name: Unzip image artifact
-        run: unzip image.json.zip
+          name: image
 
       - name: Parse image JSON
         uses: actions/github-script@v7
         id: image
         with:
           script: |
-            import fs from fs;
+            let fs = require("fs");
             let data = fs.readFileSync("image.json");
             return JSON.parse(data);
 
@@ -59,7 +48,7 @@ jobs:
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ./task-definition.json
+          task-definition: task-definition.json
           container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ fromJson(steps.image).uri }}
 

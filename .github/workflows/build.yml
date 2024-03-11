@@ -2,7 +2,6 @@ name: Build Aluraflix API
 
 on:
   pull_request:
-  workflow_dispatch:
 
 defaults:
   run:
@@ -11,9 +10,6 @@ defaults:
 env:
   AWS_REGION: us-east-2
   ECR_REPOSITORY: aluraflix-api
-
-permissions:
-  contents: read
 
 jobs:
   test:
@@ -24,16 +20,13 @@ jobs:
         os: ['ubuntu-latest']
 
     steps:
-      - name: Checkout
+      - name: Check out app code
         uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Display Python version
-        run: python -c "import sys; print(sys.version)"
 
       - name: Install dependencies
         run: |
@@ -78,16 +71,16 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          printf '{ "image": { "uri": ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} }' > image.json
+          printf '{ "image": { "uri": "${{env.ECR_REGISTRY}}/${{env.ECR_REPOSITORY}}:${{env.IMAGE_TAG}}" } }' > image.json
 
       - name: Upload a image metadata artifact
-        id: upload
         uses: actions/upload-artifact@v4.3.1
         with:
-          name: image.json
-          path: ./
+          name: image
+          path: ./app/image.json
 
-      - name: Dump steps context
-        env:
-          STEPS_CONTEXT: ${{ toJson(steps.upload) }}
-        run: echo "$STEPS_CONTEXT"
+  deploy:
+    name: Deploy to Amazon ECS
+    needs: build
+    uses: ./.github/workflows/deploy-ecs.yml
+    secrets: inherit

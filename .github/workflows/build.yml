@@ -12,7 +12,7 @@ env:
   AWS_REGION: us-east-2
   ECR_REPOSITORY: aluraflix-api
 
-# permissions: 
+# permissions:
 #   contents: read
 
 jobs:
@@ -28,9 +28,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
 
       - name: Install dependencies
         run: |
@@ -77,8 +80,16 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           printf '{ "image": { "uri": ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} }' > image.json
 
+      - run: ls -R
+
       - name: Upload a image metadata artifact
+        id: upload
         uses: actions/upload-artifact@v4.3.1
         with:
-          name: image
+          name: image.json
           path: ./
+
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps.upload) }}
+        run: echo "$STEPS_CONTEXT"

@@ -81,10 +81,4 @@ jobs:
         uses: actions/upload-artifact@v4.3.1
         with:
           name: image
-          path: ../image.json
-
-      - run: ls -laR
-
-      - run: ls -l
-
-
+          path: ./image.json

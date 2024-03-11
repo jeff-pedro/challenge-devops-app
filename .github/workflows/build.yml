@@ -74,11 +74,16 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           printf '{ "image": { "uri": "${{env.ECR_REGISTRY}}/${{env.ECR_REPOSITORY}}:${{env.IMAGE_TAG}}" }' > image.json
 
+      - run: ls -R
+
+      - run: ls ./
+    
+
       - name: Upload a image metadata artifact
         uses: actions/upload-artifact@v4.3.1
         with:
-          name: image.json
-          path: ./
+          name: image
+          path: ./image.json
 
   deploy:
     needs: test

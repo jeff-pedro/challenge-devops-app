@@ -13,7 +13,7 @@
 
 <div align="center" >
 
-  ![Tests](https://img.shields.io/github/actions/workflow/status/jeff-pedro/challenge-devops-app/deployment.yml?branch=main&style=flat-square&label=test)
+  ![Tests](https://img.shields.io/github/actions/workflow/status/jeff-pedro/challenge-devops-app/build.yml?branch=main&style=flat-square&label=test)
   ![Build](https://img.shields.io/github/actions/workflow/status/jeff-pedro/challenge-devops-app/ecs.yml?branch=main&style=flat-square)
   ![Release](https://img.shields.io/github/v/release/jeff-pedro/challenge-devops-app?display_name=tag&include_prereleases&style=flat-square)
   ![Django Version](https://img.shields.io/badge/Django-3.1.5-blueviolet?style=flat-square&logo=django)

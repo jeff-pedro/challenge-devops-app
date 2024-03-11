@@ -12,8 +12,8 @@ env:
   AWS_REGION: us-east-2
   ECR_REPOSITORY: aluraflix-api
 
-# permissions:
-#   contents: read
+permissions:
+  contents: read
 
 jobs:
   test:
@@ -79,8 +79,6 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           printf '{ "image": { "uri": ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} }' > image.json
-
-      - run: ls -R
 
       - name: Upload a image metadata artifact
         id: upload

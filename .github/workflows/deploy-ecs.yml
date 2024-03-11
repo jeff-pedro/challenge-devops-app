@@ -29,10 +29,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - run: ls -la
+
       - name: Download image artifact
         uses: actions/download-artifact@v4.1.4
         with:
-          name: image.json.zip
+          name: image.json
 
       - name: Unzip image artifact
         run: unzip image.json.zip

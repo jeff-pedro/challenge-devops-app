@@ -2,7 +2,6 @@ name: Build Aluraflix API
 
 on:
   pull_request:
-  # workflow_dispatch:
 
 defaults:
   run:
@@ -75,16 +74,15 @@ jobs:
           printf '{ "image": { "uri": "${{env.ECR_REGISTRY}}/${{env.ECR_REPOSITORY}}:${{env.IMAGE_TAG}}" }' > image.json
 
       - run: ls ./
-    
+
       - name: Upload a image metadata artifact
         uses: actions/upload-artifact@v4.3.1
         with:
           name: image
           path: ./app/image.json
-          
 
   deploy:
+    name: Deploy to Amazon ECS
     needs: build
     uses: ./.github/workflows/deploy-ecs.yml
     secrets: inherit
-    

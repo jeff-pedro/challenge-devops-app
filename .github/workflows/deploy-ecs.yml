@@ -34,7 +34,8 @@ jobs:
       - name: Download image artifact
         uses: actions/download-artifact@v4.1.4
         with:
-          name: image.json
+          name: image
+          path: ./app/image.json
 
       - name: Unzip image artifact
         run: unzip image.json.zip

@@ -12,6 +12,9 @@ env:
   AWS_REGION: us-east-2
   ECR_REPOSITORY: aluraflix-api
 
+# permissions: 
+#   contents: read
+
 jobs:
   test:
     runs-on: ${{ matrix.os }}
@@ -21,7 +24,7 @@ jobs:
         os: ['ubuntu-latest']
 
     steps:
-      - name: Check out app code
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python-version }}
@@ -77,5 +80,5 @@ jobs:
       - name: Upload a image metadata artifact
         uses: actions/upload-artifact@v4.3.1
         with:
-          name: image.json
+          name: image
           path: ./

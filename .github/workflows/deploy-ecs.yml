@@ -15,7 +15,7 @@ env:
 
 jobs:
   deploy:
-    
+
     name: Deploy to Amazon ECS
     runs-on: ubuntu-latest
 
@@ -37,7 +37,7 @@ jobs:
       - name: Download image artifact
         uses: actions/download-artifact@v4.1.4
         with:
-          name: image
+          name: image.json
 
       - name: Unzip image artifact
         run: unzip image.json.zip

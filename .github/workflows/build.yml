@@ -50,6 +50,11 @@ jobs:
         run: |
           python manage.py test
 
+      - name: Test with pytest
+        run: |
+          pip install pytest pytest-cov
+          pytest tests.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+
   build:
     needs: test
     name: Build Docker image to ECR
@@ -89,9 +94,7 @@ jobs:
           name: image.json
           path: ./
 
-
       - name: Dump steps context
         env:
           STEPS_CONTEXT: ${{ toJson(steps.upload) }}
         run: echo "$STEPS_CONTEXT"
-      

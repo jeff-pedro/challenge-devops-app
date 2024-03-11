@@ -1,10 +1,8 @@
 name: Deploy Aluraflix API
 
 on:
-  push:
-    branches:
-      - main
-
+  workflow_call:
+    
 env:
   AWS_REGION: us-east-2
   ECR_REPOSITORY: aluraflix-api
@@ -15,7 +13,6 @@ env:
 
 jobs:
   deploy:
-
     name: Deploy to Amazon ECS
     runs-on: ubuntu-latest
 
@@ -29,10 +26,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
-
-      - uses: actions/download-artifact@v4
-      - name: Display structure of downloaded files
-        run: ls -R
 
       - name: Download image artifact
         uses: actions/download-artifact@v4.1.4

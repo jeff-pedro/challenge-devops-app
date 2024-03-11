@@ -90,5 +90,8 @@ jobs:
           path: ./
 
 
-      - run: "${{ steps.upload.outputs }}"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps.upload) }}
+        run: echo "$STEPS_CONTEXT"
       

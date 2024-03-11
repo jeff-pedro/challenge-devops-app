@@ -12,7 +12,7 @@ env:
   CONTAINER_NAME: aluraflix-api
 
 jobs:
-  ecs:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:

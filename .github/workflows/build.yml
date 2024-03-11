@@ -72,7 +72,7 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          printf '{ "image": { "uri": $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG }' > image.json
+          printf '{ "image": { "uri": ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} }' > image.json
 
       - run: cat image.json
 

@@ -2,7 +2,7 @@ name: Deploy Aluraflix API
 
 on:
   workflow_call:
-    
+
 env:
   AWS_REGION: us-east-2
   ECR_REPOSITORY: aluraflix-api
@@ -32,17 +32,12 @@ jobs:
         with:
           name: image
 
-      - run: ls -R
-
-      # - name: Unzip image artifact
-      #   run: unzip image.json.zip
-
       - name: Parse image JSON
         uses: actions/github-script@v7
         id: image
         with:
           script: |
-            import fs from fs;
+            let fs = requir("fs");
             let data = fs.readFileSync("image.json");
             return JSON.parse(data);
 

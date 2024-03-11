@@ -83,7 +83,12 @@ jobs:
       - run: ls -R
 
       - name: Upload a image metadata artifact
+        id: upload
         uses: actions/upload-artifact@v4.3.1
         with:
-          name: image
-          path: ./image.json
+          name: image.json
+          path: ./
+
+
+      - run: ${{ steps.upload.outputs }}
+      

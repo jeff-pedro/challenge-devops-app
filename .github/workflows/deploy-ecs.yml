@@ -30,7 +30,7 @@ jobs:
       - name: Download image artifact
         uses: actions/download-artifact@v4.1.4
         with:
-          name: image.json
+          name: image
 
       - name: Unzip image artifact
         run: unzip image.json.zip

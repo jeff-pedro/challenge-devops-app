@@ -1,0 +1,67 @@
+name: Deploy Aluraflix API
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: us-east-2
+  ECR_REPOSITORY: aluraflix-api
+  ECS_CLUSTER: cluster-aluraflix
+  ECS_SERVICE: service-aluraflix
+  ECS_TASK_DEFINITION_FAMILY: aluraflix
+  CONTAINER_NAME: aluraflix-api
+
+jobs:
+  deploy:
+    name: Deploy to Amazon ECS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Download image artifact
+        uses: actions/download-artifact@v4.1.4
+        with:
+          name: image.json
+
+      - name: Unzip image artifact
+        run: unzip image.zip
+
+      - name: Parse image JSON
+        uses: actions/github-script@v7
+        id: image
+        with:
+          script: |
+            import fs from fs;
+            let data = fs.readFileSync("image.json");
+            return JSON.parse(data);
+
+      - name: Download task definition
+        run: |
+          aws ecs describe-task-definition --task-definition $ECS_TASK_DEFINITION_FAMILY --query taskDefinition > task-definition.json
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ./task-definition.json
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ fromJson(steps.image).uri }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
